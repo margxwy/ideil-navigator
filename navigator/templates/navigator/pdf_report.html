@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* Підключаємо шрифт прямо з диска С (найбезпечніший шлях) */
+    
+
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: 'MyFont', sans-serif;
+            color: #121212;
+            line-height: 1.5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #00df81;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #121212;
+        }
+        .logo-accent {
+            color: #00df81;
+        }
+        h1 {
+            color: #00df81;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-size: 18px;
+            color: #121212;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #00df81;
+        }
+        p {
+            font-size: 14px;
+            color: #444444;
+        }
+        .tech-item {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00df81;
+            margin-right: 15px;
+        }
+        .step-box {
+            margin-bottom: 15px;
+        }
+        .step-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #121212;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 10px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">IDEIL. <span class="logo-accent">Navigator</span></div>
+        <p style="margin-top: 10px; color: #888888;">Персональний кар'єрний звіт</p>
+    </div>
+
+    <p>Привіт, <strong>{{ user_name }}</strong>! Ми проаналізували твої відповіді та підібрали для тебе ідеальний напрямок в IT.</p>
+
+    <h1>{{ winner.name }}</h1>
+    <p>{{ winner.description }}</p>
+
+    <h2>Що потрібно вивчити:</h2>
+    <div>
+        {% for tech in technologies %}
+            <span class="tech-item">• {{ tech.name }}</span>
+        {% endfor %}
+    </div>
+
+    <h2>Покрокова дорожня карта:</h2>
+    {% for step in roadmap %}
+        <div class="step-box">
+            <div class="step-title">Крок {{ step.step_number }}: {{ step.title }}</div>
+            <p style="margin-top: 5px;">{{ step.description }}</p>
+        </div>
+    {% endfor %}
+
+    <div class="footer">
+        Згенеровано спеціально для {{ user_name }} | Команда IDEIL.
+    </div>
+
+</body>
+</html>

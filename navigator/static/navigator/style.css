@@ -1,0 +1,415 @@
+/* Підключаємо шрифт Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Змінні кольорів для сучасного IT-стилю */
+:root {
+    --bg-main: #0a0a0a;
+    --bg-card: rgba(18, 18, 18, 0.6); /* Напівпрозорий фон для ефекту скла */
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --mint: #00df81;
+    --mint-hover: #00ff95;
+    --mint-glow: rgba(0, 223, 129, 0.25);
+    --border: rgba(255, 255, 255, 0.08); /* Дуже тонкі, ледь помітні межі */
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Кастомний скролбар браузера */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--mint); }
+
+/* Базові налаштування з градієнтним фоном */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at top center, #14141c 0%, var(--bg-main) 100%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Шапка сайту (Glassmorphism) */
+.header {
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo span {
+    color: var(--mint);
+    font-weight: 600;
+}
+
+/* Основний контент з анімацією появи */
+.main-content {
+    flex-grow: 1;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    background: rgba(10, 10, 10, 0.5);
+}
+
+/* Сучасна картка (Glassmorphism) */
+.test-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 50px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+}
+
+.test-container h2 {
+    font-weight: 800;
+    font-size: 32px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    background-clip: text; /* Додали цей рядок, щоб редактор заспокоївся */
+    -webkit-text-fill-color: transparent;
+}
+
+/* Неонова кнопка */
+.btn-primary {
+    display: inline-block;
+    background: var(--mint);
+    color: #000000;
+    padding: 16px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--mint-glow);
+}
+
+.btn-primary:hover {
+    background: var(--mint-hover);
+    box-shadow: 0 8px 25px rgba(0, 255, 149, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Прогрес-бар */
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.progress-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 50px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #00b368, var(--mint));
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px var(--mint-glow);
+}
+
+/* Анімація запитань */
+.question-card {
+    display: none;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.4s ease;
+}
+
+.question-card.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.question-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 35px;
+    line-height: 1.5;
+}
+
+/* Інтерактивні кнопки відповідей */
+.answer-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 20px 24px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.answer-btn:hover {
+    border-color: var(--mint);
+    background: rgba(0, 223, 129, 0.05);
+    color: var(--mint);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* --- СТИЛІ ДЛЯ SVG ІКОНОК --- */
+.mint-svg {
+    width: 80px;
+    height: 80px;
+    fill: var(--mint); /* Фарбуємо іконку в наш змінний м'ятний колір */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавність для анімації */
+}
+
+/* Додаємо крутий ефект при наведенні мишкою */
+.mint-svg:hover {
+    fill: var(--mint-hover); /* Робимо колір трохи світлішим */
+    filter: drop-shadow(0 0 15px var(--mint-glow)); /* Додаємо неонове світіння */
+    transform: scale(1.1) translateY(-5px); /* Іконка трохи збільшується і підстрибує */
+}
+
+/* Якщо всередині SVG є лінії (stroke), а не тільки заливка (fill) */
+.mint-svg path {
+    /* Цей рядок гарантує, що всі елементи всередині іконки успадкують м'ятний колір */
+    fill: inherit; 
+}
+
+/* --- СТИЛІ ДЛЯ ФОРМИ (info.html) --- */
+.info-container {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.info-icon {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* Центруємо іконку рівно по горизонталі */
+}
+
+/* Звертаємося до svg, який лежить всередині .info-icon */
+.info-icon svg {
+    width: 80px;  /* Змінюй це значення, щоб зробити іконку більшою чи меншою */
+    height: 80px; /* Має бути таким самим, як і width, щоб зберегти пропорції */
+}
+
+.info-desc {
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.form-group.last { margin-bottom: 35px; }
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #d4d4d8;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: var(--mint);
+    box-shadow: 0 0 0 3px var(--mint-glow);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.btn-full { width: 100%; }
+
+/* --- СТОРІНКА РЕЗУЛЬТАТІВ --- */
+.results-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.results-header h1 {
+    color: var(--mint);
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px var(--mint-glow);
+}
+
+.chart-container {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 50px;
+    height: 400px;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 50px;
+}
+
+.tech-tag {
+    background: rgba(0, 223, 129, 0.08);
+    color: var(--mint);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(0, 223, 129, 0.2);
+    transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+    background: rgba(0, 223, 129, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Таймлайн */
+.roadmap-timeline {
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 50px;
+}
+
+.roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--mint), rgba(0, 223, 129, 0.1));
+}
+
+.roadmap-step {
+    position: relative;
+    margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.roadmap-step:hover {
+    border-color: rgba(0, 223, 129, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.roadmap-step::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 24px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-main);
+    border: 3px solid var(--mint);
+    box-shadow: 0 0 10px var(--mint-glow);
+}
+
+.roadmap-step h4 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: var(--text-main);
+}
+
+/* Вакансії */
+.vacancy-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vacancy-card:hover {
+    border-color: var(--mint);
+    background: rgba(0, 223, 129, 0.05);
+    transform: translateX(8px);
+    box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.vacancy-card strong {
+    font-size: 18px;
+    font-weight: 600;
+}

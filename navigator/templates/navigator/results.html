@@ -1,0 +1,106 @@
+{% extends 'navigator/base.html' %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="test-container">
+    
+    <div class="results-header">
+        <p style="color: var(--text-muted);">Привіт, {{ user_name }}! Твій ідеальний напрямок:</p>
+        <h1>{{ winner.name }}</h1>
+        <p style="line-height: 1.6;">{{ winner.description }}</p>
+    </div>
+
+    <h3 style="margin-bottom: 20px;">Твій скіл-профіль</h3>
+    <div class="chart-container">
+        <canvas id="skillsChart"></canvas>
+    </div>
+
+    {% if technologies %}
+    <h3 style="margin-bottom: 20px;">Що потрібно вивчити:</h3>
+    <div class="tech-tags">
+        {% for tech in technologies %}
+        <span class="tech-tag">{{ tech.name }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if roadmap %}
+    <h3 style="margin-bottom: 20px;">Покрокова дорожня карта:</h3>
+    <div class="roadmap-timeline">
+        {% for step in roadmap %}
+        <div class="roadmap-step">
+            <h4>Крок {{ step.step_number }}: {{ step.title }}</h4>
+            <p>{{ step.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if vacancies %}
+    <h3 style="margin-bottom: 20px;">Відкриті вакансії в IDEIL:</h3>
+    <div style="margin-bottom: 40px;">
+        {% for vacancy in vacancies %}
+        <a href="{{ vacancy.link }}" target="_blank" class="vacancy-card">
+            <strong>{{ vacancy.title }}</strong>
+            <span style="color: var(--mint);">Відгукнутися →</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div style="text-align: center; border-top: 1px solid var(--border); padding-top: 30px;">
+        <a href="{% url 'download_pdf' %}" class="btn-primary" style="background: transparent; border: 2px solid var(--mint); color: var(--mint);">
+            Завантажити PDF-звіт
+        </a>
+    </div>
+
+</div>
+
+<script>
+    const ctx = document.getElementById('skillsChart').getContext('2d');
+    
+    // Отримуємо дані з Django
+    const labels = JSON.parse('{{ chart_labels|safe }}');
+    const data = JSON.parse('{{ chart_data|safe }}');
+
+    new Chart(ctx, {
+        type: 'radar', // Радарний графік виглядає дуже по-айтішному
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Схильність до ролі',
+                data: data,
+                backgroundColor: 'rgba(0, 223, 129, 0.2)', // Напівпрозорий м'ятний
+                borderColor: '#00df81', // М'ятний
+                pointBackgroundColor: '#121212',
+                pointBorderColor: '#00df81',
+                pointHoverBackgroundColor: '#00df81',
+                pointHoverBorderColor: '#fff',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: '#222222' },
+                    grid: { color: '#222222' },
+                    pointLabels: {
+                        color: '#888888',
+                        font: { family: "'Montserrat', sans-serif", size: 14 }
+                    },
+                    ticks: {
+                        display: false, // Ховаємо цифри на осі
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'navigator/base.html' %}
+
+{% block content %}
+<div class="test-container">
+
+    {% if not questions %}
+    <div class="empty-test-msg">
+        <h3>Ой, тест ще порожній! 🚫</h3>
+        <p>Щоб тест запрацював, зайди в адмін-панель за адресою <strong>127.0.0.1:8000/admin</strong> та додай хоча б одне запитання та відповіді до нього.</p>
+        <br>
+        <a href="{% url 'home' %}" class="btn-primary">Повернутися назад</a>
+    </div>
+    {% else %}
+
+    <div id="quiz-meta" data-total="{{ questions|length }}" style="display: none;"></div>
+
+    <div class="progress-header">
+        <span>Твій прогрес</span>
+        <span id="progress-text">0 / {{ questions|length }}</span>
+    </div>
+    <div class="progress-track">
+        <div id="progress-bar" class="progress-fill" style="width: 0%"></div>
+    </div>
+
+    <div id="questions-wrapper">
+        {% for question in questions %}
+        <div id="question-{{ forloop.counter0 }}" class="question-card {% if forloop.first %}active{% endif %}">
+            
+            <h3 class="question-title">{{ question.text }}</h3>
+            
+            <div class="answers-list">
+                {% for answer in question.answers.all %}
+                <button class="answer-btn" 
+                        data-qindex="{{ forloop.parentloop.counter0 }}" 
+                        data-ansid="{{ answer.id }}" 
+                        onclick="selectAnswer(this)">
+                    {{ answer.text }}
+                </button>
+                {% endfor %}
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <form id="finish-form" method="POST" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="results" id="results-input">
+    </form>
+    {% endif %}
+
+</div>
+
+{% if questions %}
+<script>
+    let currentQuestionIndex = 0;
+    
+    const metaDiv = document.getElementById('quiz-meta');
+    const totalQuestions = parseInt(metaDiv.getAttribute('data-total')) || 0;
+    const answersData = {};
+
+    function selectAnswer(buttonElement) {
+        const questionIndex = parseInt(buttonElement.getAttribute('data-qindex'));
+        const answerId = parseInt(buttonElement.getAttribute('data-ansid'));
+        
+        answersData[questionIndex] = answerId;
+        
+        const currentCard = document.getElementById(`question-${currentQuestionIndex}`);
+        if (currentCard) currentCard.classList.remove('active');
+        
+        currentQuestionIndex++;
+        updateProgress();
+
+        if (currentQuestionIndex < totalQuestions) {
+            const nextCard = document.getElementById(`question-${currentQuestionIndex}`);
+            if (nextCard) nextCard.classList.add('active');
+        } else {
+            document.getElementById('results-input').value = JSON.stringify(answersData);
+            document.getElementById('finish-form').submit();
+        }
+    }
+
+    function updateProgress() {
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        if (totalQuestions > 0) {
+            const percentage = (currentQuestionIndex / totalQuestions) * 100;
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = `${currentQuestionIndex} / ${totalQuestions}`;
+        }
+    }
+</script>
+{% endif %}
+{% endblock %}
